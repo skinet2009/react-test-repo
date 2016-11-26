@@ -1,9 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
+
 import { Modal, Button } from 'react-bootstrap';
 
 class Sticker extends Component {
     static propTypes = {
-        sticker: PropTypes.object.isRequired,
+        stickerData: PropTypes.object.isRequired,
     }
 
     constructor(props) {
@@ -11,7 +12,8 @@ class Sticker extends Component {
 
         this.state = Object.assign({
             showModal: false,
-        }, props.sticker);
+            minimize: false,
+        }, props.stickerData);
     }
 
     componentDidMount() {}
@@ -25,7 +27,6 @@ class Sticker extends Component {
         });
     }
 
-
     /**
      * Обработчик закрыть модального окна
      */
@@ -35,6 +36,28 @@ class Sticker extends Component {
         });
     }
 
+    /**
+     *  Обработчик нажатия на кнопку редактирования
+     */
+    _handleClickShowChangeModal = () => {
+        console.log('handle click change');
+    }
+
+    /**
+     * Обработчик нажатия на кнопку сворачивания стикера
+     */
+    _handleClickMinimizeSticker = () => {
+        this.setState({
+            minimize: !this.state.minimize,
+        });
+    }
+
+    /**
+     * Обработчик нажатия на кнопку удаления стикера
+     */
+    _handleClickRemoveSticker = () => {
+        console.log('handle click remove');
+    }
 
     /**
      * Рендер модального окна
@@ -78,22 +101,24 @@ class Sticker extends Component {
             color,
             borderColor,
             backgroundColor,
+            minimize,
+            content,
             // dateBegin,
             // dateEnd,
-            content,
             // fixatorType,
         } = this.state;
         const key = `sticker-${id}`;
         const modal = this._renderModal();
+        const bodyClass = `cursor-pointer panel-body ${minimize ? 'hidden' : ''}`;
+        const panelClass = `panel ${minimize ? '' : 'sticker'}`;
 
         return (
             <div
-                onClick={this._handleClickOnSticker}
                 key={key}
-                className="cursor-pointer col-xs-3"
+                className="col-xs-3"
             >
                 <div
-                    className="panel sticker"
+                    className={panelClass}
                     style={{
                         borderColor,
                     }}
@@ -105,12 +130,36 @@ class Sticker extends Component {
                             backgroundColor,
                         }}
                     >
-                        <h3 className="panel-title">{title}</h3>
+                        <h3 className="panel-title sticker-title pull-left">
+                            {title}
+                        </h3>
+
+                        <div className="pull-right">
+                            <span
+                                className="cursor-pointer glyphicon glyphicon-cog mr5"
+                                onClick={this._handleClickShowChangeModal}
+                            />
+                            <span
+                                className="cursor-pointer glyphicon glyphicon-minus mr5"
+                                onClick={this._handleClickMinimizeSticker}
+                            />
+                            <span
+                                className="cursor-pointer glyphicon glyphicon-trash"
+                                onClick={this._handleClickRemoveSticker}
+                            />
+                        </div>
+
+                        <div className="clearfix" />
                     </div>
-                    <div className="panel-body">
+
+                    <div
+                        onClick={this._handleClickOnSticker}
+                        className={bodyClass}
+                    >
                         <p className="sticker-preview-text">{content}</p>
                     </div>
                 </div>
+
                 {modal}
             </div>
         );

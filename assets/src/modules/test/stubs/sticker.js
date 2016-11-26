@@ -29,7 +29,7 @@ export default {
         },
         {
             id: 11,
-            title: 'Sticker #11',
+            title: 'Sticker #11 with long title',
             borderColor: '#337ab7',
             backgroundColor: '#337ab7',
             color: '#34e437',
