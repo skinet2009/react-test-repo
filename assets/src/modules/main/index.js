@@ -1,7 +1,6 @@
-import $ from 'jquery';
+// import $ from 'jquery';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap';
 
-import 'modules/test'; 
-
-$(() => {
-    console.log('not');
-});
+import 'modules/test';
+import './index.less';
